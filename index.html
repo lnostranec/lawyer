@@ -454,10 +454,14 @@
           var phoneVal = phone ? phone.value.trim() : '';
           var questionVal = questionField ? questionField.value.trim() : '';
 
-          if (!nameVal || !phoneVal || !questionVal) {
-            alert('Пожалуйста, заполните все поля формы.');
+          // Обязательные поля — только имя и телефон
+          if (!nameVal || !phoneVal) {
+            alert('Пожалуйста, укажите имя и телефон.');
             return;
           }
+
+          // Закрываем окно сразу, не дожидаясь отправки
+          closeQuestionModal();
 
           var telegramUrl = 'https://lawyer-mail-backend.onrender.com/api/send-question';
           fetch(telegramUrl, {
@@ -478,9 +482,6 @@
             .then(function (data) {
               if (data && data.success) {
                 alert('Ваш вопрос успешно отправлен. Мы свяжемся с вами в ближайшее время.');
-                questionForm.reset();
-                updateQuestionCounter();
-                closeQuestionModal();
               } else {
                 alert('Не удалось отправить сообщение. Попробуйте позже.');
               }
